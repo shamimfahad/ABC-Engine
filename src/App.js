@@ -1,13 +1,21 @@
+import React from 'react';
+import { connect } from 'react-redux';
+
 import FormComponent from './components/form/form.component';
+import Result from './components/result/result.component';
 import './App.css';
 
-const App = () => {
+const App = ({ showResult }) => {
   return (
-    <div className="App">
+    <div className="App" style={{margin: '1rem 0'}}>
       <h3>ABC Engine</h3>
-      <FormComponent />
+      {showResult ? <Result /> : <FormComponent />}
     </div>
   );
 };
 
-export default App;
+const mapStateToProps = (state) => ({
+  showResult: state.showResult,
+});
+
+export default connect(mapStateToProps)(App);
