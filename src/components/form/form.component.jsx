@@ -1,38 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import FormFirstPart from './form-part-one.component';
 import FormSecondPart from './form-part-two.component';
 
-import {
-  setCurrentStep,
-  setShowResult,
-  storeFormData,
-} from '../../redux/Action';
+import { setCurrentStep, setShowResult, setFormData } from '../../redux/Action';
 
 const FormComponent = ({
   step,
   setCurrentStep,
   setShowResult,
-  storeFormData,
+  setFormData,
+  formData,
 }) => {
-  const [formData, setFormData] = useState({
-    projectName: '',
-    projectDescription: '',
-    client: '',
-    contractor: '',
-    min_x: undefined,
-    max_x: undefined,
-    min_y: undefined,
-    max_y: undefined,
-    min_z: undefined,
-    max_z: undefined,
-  });
   const prevStep = () => {
     step > 1 ? setCurrentStep(step - 1) : console.log('no previous step');
   };
   const nextStep = () => {
-    handleSubmit(formData);
     if (step < 2) {
       setCurrentStep(step + 1);
     } else {
@@ -41,12 +25,7 @@ const FormComponent = ({
   };
   const handleChange = (event) => {
     const { value, name } = event.target;
-    console.log(`${name}: ${value}`);
     setFormData({ ...formData, [name]: value });
-  };
-  const handleSubmit = (data) => {
-    console.log(data);
-    storeFormData(data);
   };
   switch (step) {
     case 1:
@@ -55,7 +34,6 @@ const FormComponent = ({
           prevStep={prevStep}
           nextStep={nextStep}
           handleChange={handleChange}
-          formData={formData}
         />
       );
     case 2:
@@ -65,14 +43,11 @@ const FormComponent = ({
             prevStep={prevStep}
             nextStep={nextStep}
             handleChange={handleChange}
-            formData={formData}
           />
           <FormSecondPart
             prevStep={prevStep}
             nextStep={nextStep}
             handleChange={handleChange}
-            formData={formData}
-            setFormData={setFormData}
           />
         </>
       );
@@ -82,7 +57,6 @@ const FormComponent = ({
           prevStep={prevStep}
           nextStep={nextStep}
           handleChange={handleChange}
-          formData={formData}
         />
       );
   }
@@ -91,11 +65,12 @@ const FormComponent = ({
 const mapDispatchToProps = (dispatch) => ({
   setCurrentStep: (step) => dispatch(setCurrentStep(step)),
   setShowResult: (val) => dispatch(setShowResult(val)),
-  storeFormData: (data) => dispatch(storeFormData(data)),
+  setFormData: (data) => dispatch(setFormData(data)),
 });
 
 const mapStateToProps = (state) => ({
   step: state.step,
+  formData: state.formData,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormComponent);

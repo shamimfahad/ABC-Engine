@@ -1,6 +1,12 @@
 import React from 'react';
-
+import { connect } from 'react-redux';
 import { CSVReader } from 'react-papaparse';
+import Button from '@material-ui/core/Button';
+
+import { setChartData, setFormData } from '../../redux/Action';
+
+import Chart from '../chart/chart.component';
+import { containerStyle } from './form-part-one.component';
 
 const buttonRef = React.createRef();
 
@@ -10,10 +16,16 @@ const FormSecondPart = ({
   handleChange,
   formData,
   setFormData,
+  setChartData,
 }) => {
   const [csvData, setCsvData] = React.useState([]);
   const [disabled, setDisabled] = React.useState(false);
+  const [showChart, setShowChart] = React.useState(false);
+
   React.useEffect(() => {
+    const kp = csvData.map((single) => {
+      return Number(single['data']['0']);
+    });
     const x = csvData.map((single) => {
       return Number(single['data']['1']);
     });
@@ -23,9 +35,14 @@ const FormSecondPart = ({
     const z = csvData.map((single) => {
       return Number(single['data']['3']);
     });
+    kp.shift();
     x.shift();
     y.shift();
     z.shift();
+
+    const chartData = { kp, x, y, z };
+    setChartData(chartData);
+
     const getMin = (obj) => {
       return Object.keys(obj).reduce((acc, val) => {
         return obj[val] < acc ? obj[val] : acc;
@@ -36,6 +53,7 @@ const FormSecondPart = ({
         return obj[val] > acc ? obj[val] : acc;
       }, -Infinity);
     };
+
     const min_x = getMin(x);
     const max_x = getMax(x);
     const min_y = getMin(y);
@@ -46,9 +64,8 @@ const FormSecondPart = ({
     if (csvData.length > 0) {
       setFormData({ ...formData, min_x, min_y, min_z, max_x, max_y, max_z });
       setDisabled(true);
+      setShowChart(true);
     }
-
-    console.log(csvData, min_x, max_x, min_y, max_y, min_z, max_z);
     // eslint-disable-next-line
   }, [csvData]);
   const handleOpenDialog = (e) => {
@@ -58,18 +75,13 @@ const FormSecondPart = ({
   };
   const handleOnFileLoad = (data) => {
     setCsvData(data);
-    // console.log('---------------------------');
-    // console.log(data);
-    // console.log('---------------------------');
   };
   const handleOnError = (err, file, inputElem, reason) => {
     console.log(err);
   };
 
   const handleOnRemoveFile = (data) => {
-    console.log('---------------------------');
-    console.log(data);
-    console.log('---------------------------');
+    setDisabled(false);
   };
 
   const handleRemoveFile = (e) => {
@@ -86,19 +98,7 @@ const FormSecondPart = ({
         nextStep();
       }}
     >
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '1rem',
-          border: '1px solid #686d76',
-          width: '50%',
-          margin: 'auto',
-          padding: '0.5rem 0',
-        }}
-      >
+      <div style={containerStyle}>
         <p>Part Two</p>
         <div style={{ width: '80%' }}>
           <CSVReader
@@ -121,7 +121,8 @@ const FormSecondPart = ({
                   type="button"
                   onClick={handleOpenDialog}
                   style={{
-                    borderRadius: 0,
+                    border: '0.5px solid #000',
+                    borderRadius: '5px',
                     marginLeft: 0,
                     marginRight: 0,
                     width: '40%',
@@ -136,8 +137,8 @@ const FormSecondPart = ({
                     borderWidth: 1,
                     borderStyle: 'solid',
                     borderColor: '#ccc',
-                    height: 45,
-                    lineHeight: 2.5,
+                    height: 30,
+                    // lineHeight: 2.5,
                     marginTop: 5,
                     marginBottom: 5,
                     paddingLeft: 13,
@@ -149,7 +150,8 @@ const FormSecondPart = ({
                 </div>
                 <button
                   style={{
-                    borderRadius: 0,
+                    border: '0.5px solid #000',
+                    borderRadius: '5px',
                     marginLeft: 0,
                     marginRight: 0,
                     paddingLeft: 20,
@@ -164,26 +166,6 @@ const FormSecondPart = ({
           </CSVReader>
         </div>
         <div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '10px',
-            }}
-          >
-            <p>Min X</p>
-            <input
-              type="text"
-              name="min_x"
-              id="min_x"
-              onChange={handleChange}
-              value={formData.min_x && formData.min_x}
-              style={{ margin: '0.5rem 0' }}
-              required
-              disabled={disabled}
-            />
-          </div>
           <div
             style={{
               display: 'flex',
@@ -212,18 +194,19 @@ const FormSecondPart = ({
               gap: '10px',
             }}
           >
-            <p>Min Y</p>
+            <p>Min X</p>
             <input
               type="text"
-              name="min_y"
-              id="min_y"
+              name="min_x"
+              id="min_x"
               onChange={handleChange}
-              value={formData.min_y && formData.min_y}
+              value={formData.min_x && formData.min_x}
               style={{ margin: '0.5rem 0' }}
               required
               disabled={disabled}
             />
           </div>
+
           <div
             style={{
               display: 'flex',
@@ -252,18 +235,19 @@ const FormSecondPart = ({
               gap: '10px',
             }}
           >
-            <p>Min Z</p>
+            <p>Min Y</p>
             <input
               type="text"
-              name="min_z"
-              id="min_z"
+              name="min_y"
+              id="min_y"
               onChange={handleChange}
-              value={formData.min_z && formData.min_z}
+              value={formData.min_y && formData.min_y}
               style={{ margin: '0.5rem 0' }}
               required
               disabled={disabled}
             />
           </div>
+
           <div
             style={{
               display: 'flex',
@@ -284,20 +268,54 @@ const FormSecondPart = ({
               disabled={disabled}
             />
           </div>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '10px',
+            }}
+          >
+            <p>Min Z</p>
+            <input
+              type="text"
+              name="min_z"
+              id="min_z"
+              onChange={handleChange}
+              value={formData.min_z && formData.min_z}
+              style={{ margin: '0.5rem 0' }}
+              required
+              disabled={disabled}
+            />
+          </div>
         </div>
+        {showChart && <Chart />}
         <div style={{ display: 'flex', gap: '0.4rem' }}>
-          <button
+          <Button
+            variant="outlined"
+            size="small"
             onClick={() => {
               prevStep();
             }}
           >
             Prev
-          </button>
-          <button type="submit">View Result</button>
+          </Button>
+          <Button variant="outlined" size="small" type="submit">
+            View Result
+          </Button>
         </div>
       </div>
     </form>
   );
 };
 
-export default FormSecondPart;
+const mapDispatchToProps = (dispatch) => ({
+  setChartData: (data) => dispatch(setChartData(data)),
+  setFormData: (data) => dispatch(setFormData(data)),
+});
+
+const mapStateToProps = (state) => ({
+  formData: state.formData,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormSecondPart);

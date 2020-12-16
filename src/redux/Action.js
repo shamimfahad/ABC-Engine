@@ -5,7 +5,7 @@ export const setCurrentStep = (step) => ({
   payload: step,
 });
 
-export const storeFormData = (data) => ({
+export const setFormData = (data) => ({
   type: Types.SET_FORM_DATA,
   payload: data,
 });
@@ -17,4 +17,9 @@ export const clearFormData = () => ({
 export const setShowResult = (val) => ({
   type: Types.SET_SHOW_RESULT,
   payload: val,
+});
+
+export const setChartData = (data) => ({
+  type: Types.SET_CHART_DATA,
+  payload: data,
 });

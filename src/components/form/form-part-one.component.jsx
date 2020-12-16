@@ -1,6 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import Button from '@material-ui/core/Button';
+
+export const containerStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '1rem',
+  border: '1px solid #ccc',
+  borderRadius: '7px',
+  width: '60%',
+  margin: 'auto',
+  padding: '0.5rem 0',
+  boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
+};
+
 const FormFirstPart = ({
   prevStep,
   nextStep,
@@ -9,14 +25,15 @@ const FormFirstPart = ({
   step,
 }) => {
   const [isFirstStep, setIsFirstStep] = React.useState(true);
+
   React.useEffect(() => {
     if (step !== 1) {
       setIsFirstStep(false);
-    }
-    else {
+    } else {
       setIsFirstStep(true);
     }
   }, [step]);
+  
   return (
     <form
       onSubmit={(e) => {
@@ -24,19 +41,7 @@ const FormFirstPart = ({
         nextStep();
       }}
     >
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '1rem',
-          border: '1px solid #686d76',
-          width: '50%',
-          margin: 'auto',
-          padding: '0.5rem 0',
-        }}
-      >
+      <div style={containerStyle}>
         <div
           style={{
             widh: 'auto',
@@ -129,15 +134,19 @@ const FormFirstPart = ({
         </div>
         {step === 1 && (
           <div style={{ display: 'flex', gap: '0.4rem' }}>
-            <button
+            <Button
+              variant="outlined"
+              size="small"
               onClick={() => {
                 prevStep();
               }}
               disabled
             >
               Prev
-            </button>
-            <button type="submit">Next</button>
+            </Button>
+            <Button variant="outlined" size="small" type="submit">
+              Next
+            </Button>
           </div>
         )}
       </div>
@@ -147,6 +156,7 @@ const FormFirstPart = ({
 
 const mapStateToProps = (state) => ({
   step: state.step,
+  formData: state.formData,
 });
 
 export default connect(mapStateToProps)(FormFirstPart);
