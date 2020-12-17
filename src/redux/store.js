@@ -9,3 +9,7 @@ const enhancers = compose(
 const store = createStore(mainReducer, enhancers);
 
 export default store;
+
+// this application is pretty small that I didn't have to use any kind of middleware
+// if you want to see how I handle bigger projects with middlewares, please visit the following link
+// https://github.com/shamimfahad/react-ecommerce/tree/master/client/src/redux

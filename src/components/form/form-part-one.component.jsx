@@ -17,6 +17,13 @@ export const containerStyle = {
   boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
 };
 
+export const inputRowStyle = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  flexWrap: 'wrap',
+  gap: '10px',
+};
+
 const FormFirstPart = ({
   prevStep,
   nextStep,
@@ -33,8 +40,9 @@ const FormFirstPart = ({
       setIsFirstStep(true);
     }
   }, [step]);
-  
+
   return (
+    // first part of the form
     <form
       onSubmit={(e) => {
         e.preventDefault();
@@ -44,21 +52,13 @@ const FormFirstPart = ({
       <div style={containerStyle}>
         <div
           style={{
-            widh: 'auto',
             display: 'flex',
             flexDirection: 'column',
             gap: '0.5rem',
           }}
         >
           <p>Part One</p>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '10px',
-            }}
-          >
+          <div style={inputRowStyle}>
             <p>Project Name</p>
             <input
               type="text"
@@ -71,14 +71,7 @@ const FormFirstPart = ({
               required
             />
           </div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '10px',
-            }}
-          >
+          <div style={inputRowStyle}>
             <p>Project Description</p>
             <input
               type="text"
@@ -91,14 +84,7 @@ const FormFirstPart = ({
               required
             />
           </div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '10px',
-            }}
-          >
+          <div style={inputRowStyle}>
             <p>Client</p>
             <input
               type="text"
@@ -111,14 +97,7 @@ const FormFirstPart = ({
               required
             />
           </div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '10px',
-            }}
-          >
+          <div style={inputRowStyle}>
             <p>Contractor</p>
             <input
               type="text"
@@ -132,6 +111,7 @@ const FormFirstPart = ({
             />
           </div>
         </div>
+        {/* Navigator with checker */}
         {step === 1 && (
           <div style={{ display: 'flex', gap: '0.4rem' }}>
             <Button

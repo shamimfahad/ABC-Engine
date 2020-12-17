@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import { setChartData, setFormData } from '../../redux/Action';
 
 import Chart from '../chart/chart.component';
-import { containerStyle } from './form-part-one.component';
+import { containerStyle, inputRowStyle } from './form-part-one.component';
 
 const buttonRef = React.createRef();
 
@@ -22,6 +22,7 @@ const FormSecondPart = ({
   const [disabled, setDisabled] = React.useState(false);
   const [showChart, setShowChart] = React.useState(false);
 
+  // extracting data from csv file also updating state as we read data from the file
   React.useEffect(() => {
     const kp = csvData.map((single) => {
       return Number(single['data']['0']);
@@ -62,6 +63,7 @@ const FormSecondPart = ({
     const max_z = getMax(z);
 
     if (csvData.length > 0) {
+      // setting form Data, disabling input fields and showing chart
       setFormData({ ...formData, min_x, min_y, min_z, max_x, max_y, max_z });
       setDisabled(true);
       setShowChart(true);
@@ -73,6 +75,7 @@ const FormSecondPart = ({
       buttonRef.current.open(e);
     }
   };
+  // setting csvData on file load
   const handleOnFileLoad = (data) => {
     setCsvData(data);
   };
@@ -81,7 +84,9 @@ const FormSecondPart = ({
   };
 
   const handleOnRemoveFile = (data) => {
+    // allowing users to input values manually and hiding chart as one removes the csv file
     setDisabled(false);
+    setShowChart(false);
   };
 
   const handleRemoveFile = (e) => {
@@ -92,6 +97,7 @@ const FormSecondPart = ({
     }
   };
   return (
+    // form second part with csv reader
     <form
       onSubmit={(e) => {
         e.preventDefault();
@@ -138,7 +144,6 @@ const FormSecondPart = ({
                     borderStyle: 'solid',
                     borderColor: '#ccc',
                     height: 30,
-                    // lineHeight: 2.5,
                     marginTop: 5,
                     marginBottom: 5,
                     paddingLeft: 13,
@@ -166,14 +171,7 @@ const FormSecondPart = ({
           </CSVReader>
         </div>
         <div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '10px',
-            }}
-          >
+          <div style={inputRowStyle}>
             <p>Max X</p>
             <input
               type="text"
@@ -186,14 +184,7 @@ const FormSecondPart = ({
               disabled={disabled}
             />
           </div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '10px',
-            }}
-          >
+          <div style={inputRowStyle}>
             <p>Min X</p>
             <input
               type="text"
@@ -207,14 +198,7 @@ const FormSecondPart = ({
             />
           </div>
 
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '10px',
-            }}
-          >
+          <div style={inputRowStyle}>
             <p>Max Y</p>
             <input
               type="text"
@@ -227,14 +211,7 @@ const FormSecondPart = ({
               disabled={disabled}
             />
           </div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '10px',
-            }}
-          >
+          <div style={inputRowStyle}>
             <p>Min Y</p>
             <input
               type="text"
@@ -247,15 +224,7 @@ const FormSecondPart = ({
               disabled={disabled}
             />
           </div>
-
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '10px',
-            }}
-          >
+          <div style={inputRowStyle}>
             <p>Max Z</p>
             <input
               type="text"
@@ -268,14 +237,7 @@ const FormSecondPart = ({
               disabled={disabled}
             />
           </div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '10px',
-            }}
-          >
+          <div style={inputRowStyle}>
             <p>Min Z</p>
             <input
               type="text"
@@ -290,6 +252,7 @@ const FormSecondPart = ({
           </div>
         </div>
         {showChart && <Chart />}
+        {/* navigator */}
         <div style={{ display: 'flex', gap: '0.4rem' }}>
           <Button
             variant="outlined"

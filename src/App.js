@@ -7,7 +7,7 @@ import './App.css';
 
 const App = ({ showResult }) => {
   return (
-    <div className="App" style={{margin: '1rem 0'}}>
+    <div className="App" style={{ margin: '1rem 0' }}>
       <h3>ABC Engine</h3>
       {showResult ? <Result /> : <FormComponent />}
     </div>

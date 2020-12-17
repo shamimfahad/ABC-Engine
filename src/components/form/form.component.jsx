@@ -23,6 +23,7 @@ const FormComponent = ({
       setShowResult(true);
     }
   };
+  // setting form data on value change
   const handleChange = (event) => {
     const { value, name } = event.target;
     setFormData({ ...formData, [name]: value });

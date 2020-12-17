@@ -15,6 +15,7 @@ import html2canvas from 'html2canvas';
 
 import { clearFormData } from '../../redux/Action';
 
+// table style
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -24,6 +25,7 @@ const useStyles = makeStyles({
 const Result = ({ formData, clearFormData }) => {
   const classes = useStyles();
 
+  // generating pdf from result table
   const printDocument = () => {
     const input = document.getElementById('pdfdiv');
     html2canvas(input).then((canvas) => {
@@ -43,7 +45,7 @@ const Result = ({ formData, clearFormData }) => {
 
   return (
     <div style={{ width: '80%', margin: '0 auto' }}>
-      <p style={{fontSize: '1.1rem'}}>Result</p>
+      <p style={{ fontSize: '1.1rem' }}>Result</p>
       <TableContainer id="pdfdiv" component={Paper}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
@@ -82,7 +84,14 @@ const Result = ({ formData, clearFormData }) => {
           )}
         </Table>
       </TableContainer>
-      <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'center', gap: '1rem' }}>
+      <div
+        style={{
+          marginTop: '1.5rem',
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '1rem',
+        }}
+      >
         <Button variant="outlined" onClick={printDocument}>
           Download As PDF
         </Button>
@@ -90,7 +99,7 @@ const Result = ({ formData, clearFormData }) => {
           variant="outlined"
           onClick={() => {
             clearFormData();
-          }} 
+          }}
         >
           Generate Another Report
         </Button>
